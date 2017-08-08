@@ -14,12 +14,12 @@ if USE_OPENCV
 OPENCV_DIR=opencv
 endif
 
-SUBDIRS = uridownloader adaptivedemux interfaces basecamerabinsrc codecparsers \
+SUBDIRS = uridownloader adaptivedemux baseadaptive interfaces basecamerabinsrc codecparsers \
 	 insertbin mpegts base video audio player allocators $(GL_DIR) $(WAYLAND_DIR) \
 	 $(OPENCV_DIR)
 
 noinst_HEADERS = gst-i18n-plugin.h gettext.h glib-compat-private.h
-DIST_SUBDIRS = uridownloader adaptivedemux interfaces gl basecamerabinsrc \
+DIST_SUBDIRS = uridownloader adaptivedemux baseadaptive interfaces gl basecamerabinsrc \
 	codecparsers insertbin mpegts wayland opencv base video audio player allocators
 
 #dependencies
