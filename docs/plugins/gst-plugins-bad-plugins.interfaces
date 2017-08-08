@@ -62,7 +62,9 @@ GstHlsSink GstChildProxy
 GstHlsSink2 GstChildProxy
 GstId3BaseMux GstTagSetter
 GstId3Mux GstTagSetter
+GstIpcSlavePipeline GstChildProxy
 GstJifMux GstTagSetter GstTagXmpWriter
+GstKMSSink GstVideoOverlay
 GstKateEnc GstTagSetter
 GstKateTag GstTagSetter
 GstLiveAdder GstChildProxy

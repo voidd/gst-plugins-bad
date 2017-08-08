@@ -1875,6 +1875,20 @@ AG_GST_CHECK_FEATURE(SHM, [POSIX shared memory source and sink], shm, [
     fi
 ])
 
+dnl check for unix sockets (ipcpipeline plugin)
+translit(dnm, m, l) AM_CONDITIONAL(USE_IPCPIPELINE, true)
+AG_GST_CHECK_FEATURE(IPCPIPELINE, [Unix sockets], ipcpipeline, [
+    if test "x$HAVE_SYS_SOCKET_H" = "xyes"; then
+        AC_CHECK_FUNC(pipe, [
+          AC_CHECK_FUNC(socketpair, [HAVE_IPCPIPELINE=yes], [HAVE_IPCPIPELINE=no])
+          ], [
+          HAVE_IPCPIPELINE=no
+        ])
+    else
+        HAVE_IPCPIPELINE=no
+    fi
+])
+
 dnl check for Video CD
 translit(dnm, m, l) AM_CONDITIONAL(USE_VCD, true)
 AG_GST_CHECK_FEATURE(VCD, [Video CD], vcdsrc, [
@@ -3662,6 +3676,7 @@ sys/dshowsrcwrapper/Makefile
 sys/dshowvideosink/Makefile
 sys/dvb/Makefile
 sys/fbdev/Makefile
+sys/ipcpipeline/Makefile
 sys/kms/Makefile
 sys/msdk/Makefile
 sys/nvdec/Makefile
@@ -3701,6 +3716,7 @@ tests/examples/gl/gtk/switchvideooverlay/Makefile
 tests/examples/gl/qt/Makefile
 tests/examples/gl/sdl/Makefile
 tests/examples/gtk/Makefile
+tests/examples/ipcpipeline/Makefile
 tests/examples/mpegts/Makefile
 tests/examples/mxf/Makefile
 tests/examples/opencv/Makefile

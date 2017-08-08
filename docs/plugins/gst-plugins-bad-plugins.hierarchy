@@ -119,6 +119,7 @@ GObject
             GstGLTestSrc
             GstMMS
             GstNeonhttpSrc
+            GstQtSrc
             GstRTMPSrc
             GstRfbSrc
             GstShmSrc
@@ -141,8 +142,6 @@ GObject
               ladspa-sine-so-sine-fcaa
             GstOFA
             GstStereo
-            GstWebrtcDsp
-            GstWebrtcEchoProbe
           GstAudioMixMatrix
           GstBayer2RGB
           GstDebugSpy
@@ -256,6 +255,7 @@ GObject
           GstHlsSink2
           GstPipeline
             GstCameraBin
+            GstIpcSlavePipeline
           GstSDPDemux
           GstSdpSrc
           GstVideoParse
@@ -278,6 +278,8 @@ GObject
         GstGLStereoSplit
         GstGmeDec
         GstInterlace
+        GstIpcPipelineSink
+        GstIpcPipelineSrc
         GstJP2kDecimator
         GstJifMux
         GstKateDec
@@ -287,9 +289,7 @@ GObject
         GstMXFDemux
         GstMidiParse
         GstModPlug
-        GstMpeg2enc
         GstMpegPSDemux
-        GstMplex
         GstMusepackDec
         GstNetSim
         GstNonstreamAudioDecoder
@@ -300,7 +300,6 @@ GObject
           GstRtpAsfPay
         GstRtpOnvifParse
         GstRtpOnvifTimestamp
-        GstSFDec
         GstSegmentClip
           GstAudioSegmentClip
           GstVideoSegmentClip

@@ -58955,7 +58955,7 @@
 <FLAGS>rw</FLAGS>
 <NICK>Eyes profile</NICK>
 <BLURB>Location of Haar cascade file to use for eye-pair detection.</BLURB>
-<DEFAULT>"/usr/share/OpenCV/haarcascades/haarcascade_mcs_eyepair_small.xml"</DEFAULT>
+<DEFAULT>"/usr/share/opencv/haarcascades/haarcascade_mcs_eyepair_small.xml"</DEFAULT>
 </ARG>
 
 <ARG>
@@ -59005,7 +59005,7 @@
 <FLAGS>rw</FLAGS>
 <NICK>Mouth profile</NICK>
 <BLURB>Location of Haar cascade file to use for mouth detection.</BLURB>
-<DEFAULT>"/usr/share/OpenCV/haarcascades/haarcascade_mcs_mouth.xml"</DEFAULT>
+<DEFAULT>"/usr/share/opencv/haarcascades/haarcascade_mcs_mouth.xml"</DEFAULT>
 </ARG>
 
 <ARG>
@@ -59015,7 +59015,7 @@
 <FLAGS>rw</FLAGS>
 <NICK>Nose profile</NICK>
 <BLURB>Location of Haar cascade file to use for nose detection.</BLURB>
-<DEFAULT>"/usr/share/OpenCV/haarcascades/haarcascade_mcs_nose.xml"</DEFAULT>
+<DEFAULT>"/usr/share/opencv/haarcascades/haarcascade_mcs_nose.xml"</DEFAULT>
 </ARG>
 
 <ARG>
@@ -59025,7 +59025,7 @@
 <FLAGS>rw</FLAGS>
 <NICK>Face profile</NICK>
 <BLURB>Location of Haar cascade file to use for face detection.</BLURB>
-<DEFAULT>"/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"</DEFAULT>
+<DEFAULT>"/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml"</DEFAULT>
 </ARG>
 
 <ARG>
@@ -59065,7 +59065,7 @@
 <FLAGS>rw</FLAGS>
 <NICK>Profile</NICK>
 <BLURB>Location of Haar cascade file to use for face blurion.</BLURB>
-<DEFAULT>"/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"</DEFAULT>
+<DEFAULT>"/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml"</DEFAULT>
 </ARG>
 
 <ARG>
@@ -60055,7 +60055,7 @@
 <FLAGS>rw</FLAGS>
 <NICK>Presentation delay</NICK>
 <BLURB>Default presentation delay (in seconds, milliseconds or fragments) (e.g. 12s, 2500ms, 3f).</BLURB>
-<DEFAULT>NULL</DEFAULT>
+<DEFAULT>"10s"</DEFAULT>
 </ARG>
 
 <ARG>
@@ -72981,6 +72981,89 @@ Gestures in the defined region of interest will emit messages.</BLURB>
 </ARG>
 
 <ARG>
+<<<<<<< ours
+=======
+<NAME>GstIpcPipelineSrc::ack-time</NAME>
+<TYPE>guint64</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Ack time</NICK>
+<BLURB>Maximum time to wait for a response to a message.</BLURB>
+<DEFAULT>10000000</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstIpcPipelineSrc::fdin</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[G_MAXULONG,65535]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Input file descriptor</NICK>
+<BLURB>File descriptor to read data from.</BLURB>
+<DEFAULT>-1</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstIpcPipelineSrc::fdout</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[G_MAXULONG,65535]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Output file descriptor</NICK>
+<BLURB>File descriptor to write data through.</BLURB>
+<DEFAULT>-1</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstIpcPipelineSrc::read-chunk-size</NAME>
+<TYPE>guint</TYPE>
+<RANGE>[1,16777216]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Read chunk size</NICK>
+<BLURB>Read chunk size.</BLURB>
+<DEFAULT>65536</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstIpcPipelineSink::ack-time</NAME>
+<TYPE>guint64</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Ack time</NICK>
+<BLURB>Maximum time to wait for a response to a message.</BLURB>
+<DEFAULT>10000000</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstIpcPipelineSink::fdin</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[G_MAXULONG,65535]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Input file descriptor</NICK>
+<BLURB>File descriptor to received data from.</BLURB>
+<DEFAULT>-1</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstIpcPipelineSink::fdout</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[G_MAXULONG,65535]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Output file descriptor</NICK>
+<BLURB>File descriptor to send data through.</BLURB>
+<DEFAULT>-1</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstIpcPipelineSink::read-chunk-size</NAME>
+<TYPE>guint</TYPE>
+<RANGE>[1,16777216]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Read chunk size</NICK>
+<BLURB>Read chunk size.</BLURB>
+<DEFAULT>4096</DEFAULT>
+</ARG>
+
+<ARG>
+>>>>>>> theirs
 <NAME>GstCurlHttpSrc::automatic-redirect</NAME>
 <TYPE>gboolean</TYPE>
 <RANGE></RANGE>
@@ -73177,7 +73260,11 @@ Gestures in the defined region of interest will emit messages.</BLURB>
 <FLAGS>rw</FLAGS>
 <NICK>User-Agent</NICK>
 <BLURB>URI of resource requested.</BLURB>
+<<<<<<< ours
 <DEFAULT>"GStreamer curlhttpsrc libcurl/7.54.1"</DEFAULT>
+=======
+<DEFAULT>"GStreamer curlhttpsrc libcurl/7.52.1"</DEFAULT>
+>>>>>>> theirs
 </ARG>
 
 <ARG>
@@ -73201,6 +73288,7 @@ Gestures in the defined region of interest will emit messages.</BLURB>
 </ARG>
 
 <ARG>
+<<<<<<< ours
 <NAME>GstGLVideoFlip::method</NAME>
 <TYPE>GstGLVideoFlipMethod</TYPE>
 <RANGE></RANGE>
@@ -73348,6 +73436,45 @@ Gestures in the defined region of interest will emit messages.</BLURB>
 <NICK>Z Translation</NICK>
 <BLURB>Translates the video at the Z-Axis, in universal [0-1] coordinate.</BLURB>
 <DEFAULT>0</DEFAULT>
+=======
+<NAME>GstWildmidiDec::enhanced-resampling</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Enhanced resampling</NICK>
+<BLURB>Use enhanced resampling if set to TRUE, or linear interpolation if set to FALSE.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstWildmidiDec::log-volume-scale</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Logarithmic volume scale</NICK>
+<BLURB>Use a logarithmic volume scale if set to TRUE, or a linear scale if set to FALSE.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstWildmidiDec::output-buffer-size</NAME>
+<TYPE>guint</TYPE>
+<RANGE>[1,1073741823]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Output buffer size</NICK>
+<BLURB>Size of each output buffer, in samples (actual size can be smaller than this during flush or EOS).</BLURB>
+<DEFAULT>1024</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GstWildmidiDec::reverb</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Reverb</NICK>
+<BLURB>Whether or not to enable the WildMidi 8 reflection reverb engine to add more depth to the sound.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+>>>>>>> theirs
 </ARG>
 
 <ARG>
@@ -73449,4 +73576,3 @@ Gestures in the defined region of interest will emit messages.</BLURB>
 <BLURB>Whether or not to enable the WildMidi 8 reflection reverb engine to add more depth to the sound.</BLURB>
 <DEFAULT>FALSE</DEFAULT>
 </ARG>
-
