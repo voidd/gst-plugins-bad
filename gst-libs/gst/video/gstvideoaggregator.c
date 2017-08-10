@@ -514,7 +514,7 @@ gst_video_aggregator_find_best_format (GstVideoAggregator * vagg,
     format_number =
         GPOINTER_TO_INT (g_hash_table_lookup (formats_table,
             GINT_TO_POINTER (GST_VIDEO_INFO_FORMAT (&pad->info))));
-    format_number += 1;
+    format_number += pad->info.width * pad->info.height;
 
     g_hash_table_replace (formats_table,
         GINT_TO_POINTER (GST_VIDEO_INFO_FORMAT (&pad->info)),
@@ -636,13 +636,16 @@ gst_video_aggregator_default_update_caps (GstVideoAggregator * vagg,
   }
 
   GST_DEBUG_OBJECT (vagg,
-      "The output format will now be : %d with chroma : %s",
-      best_format, gst_video_chroma_to_string (best_info.chroma_site));
+      "The output format will now be : %d with chroma : %s and colorimetry %s",
+      best_format, gst_video_chroma_to_string (best_info.chroma_site),
+      gst_video_colorimetry_to_string (&best_info.colorimetry));
 
   best_format_caps = gst_caps_copy (caps);
   gst_caps_set_simple (best_format_caps, "format", G_TYPE_STRING,
       gst_video_format_to_string (best_format), "chroma-site", G_TYPE_STRING,
-      gst_video_chroma_to_string (best_info.chroma_site), NULL);
+      gst_video_chroma_to_string (best_info.chroma_site), "colorimetry",
+      G_TYPE_STRING, gst_video_colorimetry_to_string (&best_info.colorimetry),
+      NULL);
   ret = gst_caps_merge (best_format_caps, gst_caps_ref (caps));
 
   return ret;

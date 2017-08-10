@@ -55,6 +55,13 @@
 #include <winsock2.h>
 #endif
 
+
+const guint GST_PCAPPARSE_MAGIC_MILLISECOND_NO_SWAP_ENDIAN = 0xa1b2c3d4;
+const guint GST_PCAPPARSE_MAGIC_NANOSECOND_NO_SWAP_ENDIAN = 0xa1b23c4d;
+const guint GST_PCAPPARSE_MAGIC_MILLISECOND_SWAP_ENDIAN = 0xd4c3b2a1;
+const guint GST_PCAPPARSE_MAGIC_NANOSECOND_SWAP_ENDIAN = 0x4d3cb2a1;
+
+
 enum
 {
   PROP_0,
@@ -309,6 +316,7 @@ gst_pcap_parse_reset (GstPcapParse * self)
 {
   self->initialized = FALSE;
   self->swap_endian = FALSE;
+  self->nanosecond_timestamp = FALSE;
   self->cur_packet_size = -1;
   self->cur_ts = GST_CLOCK_TIME_NONE;
   self->base_ts = GST_CLOCK_TIME_NONE;
@@ -333,7 +341,9 @@ gst_pcap_parse_read_uint32 (GstPcapParse * self, const guint8 * p)
   }
 }
 
+#define ETH_MAC_ADDRESSES_LEN    12
 #define ETH_HEADER_LEN    14
+#define ETH_VLAN_HEADER_LEN    4
 #define SLL_HEADER_LEN    16
 #define IP_HEADER_MIN_LEN 20
 #define UDP_HEADER_LEN     8
@@ -363,9 +373,20 @@ gst_pcap_parse_scan_frame (GstPcapParse * self,
     case LINKTYPE_ETHER:
       if (buf_size < ETH_HEADER_LEN + IP_HEADER_MIN_LEN + UDP_HEADER_LEN)
         return FALSE;
-
-      eth_type = GUINT16_FROM_BE (*((guint16 *) (buf + 12)));
-      buf_ip = buf + ETH_HEADER_LEN;
+      eth_type = GUINT16_FROM_BE (*((guint16 *) (buf + ETH_MAC_ADDRESSES_LEN)));
+      /* check for vlan 802.1q header (4 bytes, with first two bytes equal to 0x8100)  */
+      if (eth_type == 0x8100) {
+        if (buf_size <
+            ETH_HEADER_LEN + ETH_VLAN_HEADER_LEN + IP_HEADER_MIN_LEN +
+            UDP_HEADER_LEN)
+          return FALSE;
+        eth_type =
+            GUINT16_FROM_BE (*((guint16 *) (buf + ETH_MAC_ADDRESSES_LEN +
+                    ETH_VLAN_HEADER_LEN)));
+        buf_ip = buf + ETH_HEADER_LEN + ETH_VLAN_HEADER_LEN;
+      } else {
+        buf_ip = buf + ETH_HEADER_LEN;
+      }
       break;
     case LINKTYPE_SLL:
       if (buf_size < SLL_HEADER_LEN + IP_HEADER_MIN_LEN + UDP_HEADER_LEN)
@@ -386,8 +407,12 @@ gst_pcap_parse_scan_frame (GstPcapParse * self,
       return FALSE;
   }
 
-  if (eth_type != 0x800)
+  if (eth_type != 0x800) {
+    GST_ERROR_OBJECT (self,
+        "Link type %d: Ethernet type %d is not supported; only type 0x800",
+        (gint) self->linktype, (gint) eth_type);
     return FALSE;
+  }
 
   b = *buf_ip;
   if (((b >> 4) & 0x0f) != 4)
@@ -535,7 +560,9 @@ gst_pcap_parse_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
         gst_adapter_unmap (self->adapter);
         gst_adapter_flush (self->adapter, 16);
 
-        self->cur_ts = ts_sec * GST_SECOND + ts_usec * GST_USECOND;
+        self->cur_ts =
+            ts_sec * GST_SECOND +
+            ts_usec * (self->nanosecond_timestamp ? 1 : GST_USECOND);
         self->cur_packet_size = incl_len;
       }
     } else {
@@ -553,10 +580,16 @@ gst_pcap_parse_chain (GstPad * pad, GstObject * parent, GstBuffer * buffer)
       linktype = *((guint32 *) (data + 20));
       gst_adapter_unmap (self->adapter);
 
-      if (magic == 0xa1b2c3d4) {
+      if (magic == GST_PCAPPARSE_MAGIC_MILLISECOND_NO_SWAP_ENDIAN ||
+          magic == GST_PCAPPARSE_MAGIC_NANOSECOND_NO_SWAP_ENDIAN) {
         self->swap_endian = FALSE;
-      } else if (magic == 0xd4c3b2a1) {
+        if (magic == GST_PCAPPARSE_MAGIC_NANOSECOND_NO_SWAP_ENDIAN)
+          self->nanosecond_timestamp = TRUE;
+      } else if (magic == GST_PCAPPARSE_MAGIC_MILLISECOND_SWAP_ENDIAN ||
+          magic == GST_PCAPPARSE_MAGIC_NANOSECOND_SWAP_ENDIAN) {
         self->swap_endian = TRUE;
+        if (magic == GST_PCAPPARSE_MAGIC_NANOSECOND_SWAP_ENDIAN)
+          self->nanosecond_timestamp = TRUE;
         major_version = GUINT16_SWAP_LE_BE (major_version);
         linktype = GUINT32_SWAP_LE_BE (linktype);
       } else {
